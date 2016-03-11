@@ -1,12 +1,23 @@
 #Askhsh 6
 import urllib2
 import json
-import datetime
-date = raw_input("Give date: ")
+def dformat(date):
+	date=date.replace('','-')
+	date=date.replace(' ','-')
+	date=date.replace('.','-')
+	date=date.replace('/','-')
+	return date
 prefix='http://applications.opap.gr/DrawsRestServices/kino/drawDate/'
+date = raw_input("Give date: ")
+date = dformat(date)
 suffix='.json'
 URL = urllib2.urlopen (prefix+date+suffix)
 data = URL.read()
+while data == '''{"draws":{"draw":[]}}''':
+	date = raw_input("Give date: ")
+	date = dformat(date)
+	URL = urllib2.urlopen (prefix+date+suffix)
+	data = URL.read()
 data=data.strip()
 data = data [18:-4]
 data=data.split('''},{''')
